@@ -25,7 +25,7 @@
         <!-- tittle -->
         <h1 class="text-center">Time Management</h1>
         <!-- form -->
-        <form action="">
+        <form action="javascript:void(0)" onsubmit="handleOnSubmit(this)">
           <div class="row g-2 mt-5 shadow-lg border p-5 rounded">
             <div class="col-md-7">
               <input
@@ -33,18 +33,24 @@
                 class="form-control"
                 placeholder="Task"
                 aria-label="Task"
+                name="task"
+                required
               />
             </div>
             <div class="col-md-2">
               <input
-                type="text"
+                type="number"
                 class="form-control"
                 placeholder="hours"
                 aria-label="hours"
+                name="hr"
+                required
               />
             </div>
             <div class="col-md-3 d-grid">
-              <button class="btn btn-primary">Add New Task</button>
+              <button class="btn btn-primary" type="submit">
+                Add New Task
+              </button>
             </div>
           </div>
         </form>
