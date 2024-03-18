@@ -4,3 +4,7 @@
     rgba(128, 0, 128, 0.765)
   );
 }
+
+.table {
+  --bs-table-bg: transparent !important;
+}
