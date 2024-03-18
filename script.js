@@ -1,5 +1,6 @@
-const taskList = [];
+let taskList = [];
 const entryElm = document.getElementById("entryList");
+const badElm = document.getElementById("badList");
 const tWHr = 7 * 24;
 const handleOnSubmit = (form) => {
   const newForm = new FormData(form);
@@ -9,6 +10,8 @@ const handleOnSubmit = (form) => {
   const obj = {
     task,
     hr,
+    type: "entry",
+    id: randomIdGenerator(),
   };
 
   // check if you have enough hr left to fit this incomung task
@@ -24,15 +27,44 @@ const handleOnSubmit = (form) => {
 
 const display = () => {
   let str = ``;
-
-  taskList.forEach((item, i) => {
+  const tempArg = taskList.filter((item) => item.type === "entry");
+  tempArg.forEach((item, i) => {
     str += `
     <tr>
     <th>${i + 1}</th>
     <td>${item.task}</td>
     <td>${item.hr}hrs</td>
     <td class="text-end">
-      <button class="btn btn-danger btn-sm">
+      <button onclick="handelOnDelete('${
+        item.id
+      }')"class="btn btn-danger btn-sm">
+        <i class="fa-solid fa-trash"></i>
+      </button>
+      <button onclick="switchTask('${
+        item.id
+      }', 'bad')" class="btn btn-success btn-sm">
+        <i class="fa-solid fa-arrow-right-long"></i>
+      </button>
+    </td>
+  </tr>`;
+  });
+
+  entryElm.innerHTML = str;
+  displayBadList();
+};
+const displayBadList = () => {
+  let str = ``;
+  const tempArg = taskList.filter((item) => item.type === "bad");
+  tempArg.forEach((item, i) => {
+    str += `
+    <tr>
+    <th>${i + 1}</th>
+    <td>${item.task}</td>
+    <td>${item.hr}hrs</td>
+    <td class="text-end">
+      <button onclick="handelOnDelete('${
+        item.id
+      }')"class="btn btn-danger btn-sm">
         <i class="fa-solid fa-trash"></i>
       </button>
       <button class="btn btn-success btn-sm">
@@ -55,4 +87,31 @@ const total = () => {
 
   document.getElementById("ttlHrs").innerText = ttl;
   return ttl;
+};
+
+const handelOnDelete = (id) => {
+  if (window.confirm("Are you sure you want to delete this item?")) {
+    taskList = taskList.filter((item) => item.id !== id);
+    display();
+  }
+};
+
+const switchTask = (id, type) => {
+  taskList = taskList.map((item) => {
+    if (item.id === id) item.type = type;
+    return item;
+  });
+  display();
+};
+
+const randomIdGenerator = () => {
+  const idLength = 6;
+  const str = "ASDFGHJKLQWERTYUIOPZXCVBNM1234567890asdfghjklzxcvbnmqwertyuiop";
+
+  let id = "";
+  for (let i = 0; i < idLength; i++) {
+    const randomPosition = Math.floor(Math.random() * str.length);
+    id += str[randomPosition];
+  }
+  return id;
 };
