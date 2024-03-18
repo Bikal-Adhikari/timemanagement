@@ -23,6 +23,7 @@ const handleOnSubmit = (form) => {
   taskList.push(obj);
   display();
   total();
+  form.reset();
 };
 
 const display = () => {
